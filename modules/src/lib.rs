@@ -1,3 +1,2 @@
-fn main() {
-    println!("Hello, world!");
-}
+mod functions;
+pub use functions::read_plugins;

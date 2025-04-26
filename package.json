@@ -13,7 +13,9 @@
   "type": "commonjs",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+      "build": "tsc && cpy ./src/rust ./dist",
+      "build:rs": "cd modules && napi build && cpy ./index.node ./index.d.ts ../src/rust",
+      "start": "node dist/main.js"
   },
   "dependencies": {
     "@hapi/boom": "^10.0.1",
@@ -21,5 +23,9 @@
     "baileys": "^6.7.16",
     "pino": "^9.6.0",
     "qrcode": "^1.5.4"
+  },
+  "devDependencies": {
+    "cpy-cli": "^5.0.0",
+    "typescript": "^5.8.3"
   }
 }

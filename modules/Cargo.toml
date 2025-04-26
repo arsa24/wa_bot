@@ -4,3 +4,8 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+napi = "2.16.17"
+napi-derive = "2.16.13"
+
+[lib]
+crate-type = ["cdylib"]
