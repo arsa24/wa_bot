@@ -1,0 +1,25 @@
+{
+  "name": "bot_wa",
+  "version": "0.1.0",
+  "description": "simple whatsapp bot with baileys",
+  "keywords": [
+    "bot",
+    "wabot",
+    "whatsapp",
+    "nodejs"
+  ],
+  "license": "MIT",
+  "author": "arsa24",
+  "type": "commonjs",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@hapi/boom": "^10.0.1",
+    "@napi-rs/cli": "^2.18.4",
+    "baileys": "^6.7.16",
+    "pino": "^9.6.0",
+    "qrcode": "^1.5.4"
+  }
+}
