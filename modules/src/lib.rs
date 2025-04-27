@@ -1,2 +1,2 @@
 mod functions;
-pub use functions::read_plugins;
+pub use functions::{read_plugins,matching_plugin};

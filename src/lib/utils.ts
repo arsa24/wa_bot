@@ -13,7 +13,7 @@ export class Utils {
     type: MessageUpsertType;
     requestId?: string;
   };
-  id: string | undefined;
+  jid: string | undefined;
 
   constructor(
     sock: WASocket,
@@ -25,7 +25,7 @@ export class Utils {
   ) {
     this.sock = sock;
     this.msg = msg;
-    this.id = this.msg.messages[0].key.remoteJid ?? undefined;
+    this.jid = this.msg.messages[0].key.remoteJid ?? undefined;
   }
 
   async reply(
@@ -34,8 +34,8 @@ export class Utils {
   ) {
     if (typeof content == "string") content = { text: content };
 
-    if (this.id != undefined)
-      this.sock.sendMessage(this.id, content, {
+    if (this.jid != undefined)
+      this.sock.sendMessage(this.jid, content, {
         quoted: this.msg.messages[0],
         ...options,
       });

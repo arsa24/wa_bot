@@ -1,6 +1,8 @@
+import { Utils } from "../lib/utils";
+
 export interface PluginType {
     name: string,
     triggers: string[];
     info?: string;
-    code: () => Promise<void>;
+    code: (ctx: Utils) => Promise<void>;
 }
