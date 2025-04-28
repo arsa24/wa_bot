@@ -44,7 +44,7 @@ Each command is a separate JavaScript/TypeScript file inside the `/plugins/ fold
 ```ts
 import { PluginType } from "../../types/plugin_type";  // import plugin type
 
-export const plugin: PluginType = {
+export const plugin: PluginType = { // variable must be named `plugin`
   name: "Ping", // name the plugin
   triggers: ["yt"], // triggers the command
   code: async (ctx) => {
