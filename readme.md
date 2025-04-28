@@ -38,7 +38,7 @@ npm start
 ```
 
 ## Adding New Commands
-Each command is a separate JavaScript/TypeScript file inside the `/plugins/ folder`.
+Each command is a TypeScript file contained in `/plugins/folder`.
 
 ### Example
 ```ts
@@ -46,12 +46,12 @@ import { PluginType } from "../../types/plugin_type";  // import plugin type
 
 export const plugin: PluginType = { // variable must be named `plugin`
   name: "Ping", // name the plugin
-  triggers: ["yt"], // triggers the command
-  code: async (ctx) => {
+  triggers: ["yt"], // triggers the plugin
+  code: async (ctx, msg) => {
 	// do something
 	ctx.reply("Pong"); // Send reply chat
   },
-};
+}
 ```
 
 ##  How Rust Helps

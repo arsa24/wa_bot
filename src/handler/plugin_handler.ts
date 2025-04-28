@@ -2,7 +2,8 @@ import { WASocket } from "baileys";
 import { Utils } from "../lib/utils";
 import { matchingPlugin, readPlugins } from "../rust/index";
 import { PluginType } from "../types/plugin_type";
-import { Simulate } from "../types/simulate";
+import { Simulate } from "../types/simulate_type";
+import { botConfig } from "../config/bot_config";
 
 export class PluginHandler {
   path: string;
@@ -25,7 +26,7 @@ export class PluginHandler {
         const getPluginObj = require(plugin);
         const cmd: PluginType = getPluginObj.plugin;
 
-        if (matchingPlugin(getCommand, cmd.triggers, [".", "/", "!"])) {
+        if (matchingPlugin(getCommand, cmd.triggers, botConfig.prefix)) {
           if (cmd.isVoiceChat) {
             ctx.simulate(Simulate.RECORDING);
             return await cmd.code(ctx, getMessage);

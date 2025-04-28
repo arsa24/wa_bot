@@ -5,7 +5,7 @@ import {
   WAMessage,
   WASocket,
 } from "baileys";
-import { Simulate } from "../types/simulate";
+import { Simulate } from "../types/simulate_type";
 
 export class Utils {
   sock: WASocket;
