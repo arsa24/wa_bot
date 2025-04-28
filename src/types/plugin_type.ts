@@ -4,5 +4,6 @@ export interface PluginType {
     name: string,
     triggers: string[];
     info?: string;
-    code: (ctx: Utils) => Promise<void>;
+    isVoiceChat?: boolean; 
+    code: (ctx: Utils, msg: string) => Promise<void>;
 }

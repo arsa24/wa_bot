@@ -1,0 +1,1 @@
+export enum Simulate { TYPING, RECORDING}

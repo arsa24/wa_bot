@@ -6,7 +6,7 @@ const QRCode = require("qrcode");
 
 let sock: WASocket;
 
-const connect = async () => {
+const connect = async (): Promise<void> => {
   const { state, saveCreds } = await useMultiFileAuthState("state");
   sock = makeWASocket({
     auth: state,

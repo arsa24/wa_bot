@@ -1,7 +1,5 @@
 use napi_derive::napi;
-// use serde::Serialize;
 use std::{fs, path::Path};
-// use napi::bindgen_prelude::;
 
 #[napi]
 pub fn read_plugins(path_plugin: String) -> napi::Result<Vec<String>> {
@@ -37,30 +35,21 @@ fn visit_dirs(dir: &Path, files: &mut Vec<String>) -> napi::Result<()> {
     Ok(())
 }
 
-#[napi(object)]
-pub struct CommandResult {
-    pub file: String,
-    pub trigger: String,
-}
-
 #[napi]
 pub fn matching_plugin(
-    message: String,
-    commands: Vec<(String, Vec<String>, Vec<String>)>,
-) -> Option<CommandResult> {
-    let msg_lower = message.to_lowercase();
-    for (file, triggers, prefixes) in commands {
-        for prefix in prefixes {
-            for trigger in &triggers {
-                let pattern = format!("{}{}", prefix.to_lowercase(), trigger.to_lowercase());
-                if msg_lower.starts_with(&pattern) {
-                    return Some(CommandResult {
-                        file,
-                        trigger: trigger.clone(),
-                    });
-                }
+    command: String,
+    triggers: Vec<String>,
+    prefixes: Vec<String>,
+) -> bool {
+    let command_lower = command.to_lowercase();
+    for prefix in prefixes {
+        for trigger in &triggers {
+            let pattern = format!("{}{}", prefix.to_lowercase(), trigger.to_lowercase());
+            if command_lower == pattern {
+                return true;
             }
         }
     }
-    None
+    false
 }
+

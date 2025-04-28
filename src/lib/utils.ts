@@ -5,6 +5,7 @@ import {
   WAMessage,
   WASocket,
 } from "baileys";
+import { Simulate } from "../types/simulate";
 
 export class Utils {
   sock: WASocket;
@@ -41,19 +42,26 @@ export class Utils {
       });
   }
 
-  async getMessages() {
+  simulate(type: Simulate) {
+    this.sock.sendPresenceUpdate(
+      type == Simulate.TYPING ? "composing" : "recording",
+      this.jid
+    );
+  }
+
+  async getMessages(): Promise<string> {
     const message = this.msg?.messages[0]?.message;
     if (!message) return "";
 
     const messageType = Object.keys(message)[0];
     return messageType === "conversation"
-      ? message.conversation
+      ? message?.conversation ?? ""
       : messageType === "extendedTextMessage"
-      ? message.extendedTextMessage?.text
+      ? message.extendedTextMessage?.text ?? ""
       : messageType === "imageMessage"
-      ? message.imageMessage?.caption
+      ? message.imageMessage?.caption ?? ""
       : messageType === "videoMessage"
-      ? message.videoMessage?.caption
+      ? message.videoMessage?.caption ?? ""
       : "";
   }
 }
