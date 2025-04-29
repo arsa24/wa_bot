@@ -6,6 +6,7 @@ import {
   WASocket,
 } from "baileys";
 import { Simulate } from "../types/simulate_type";
+import { FilterMessage } from "../types/filter_message_type";
 
 export class Utils {
   sock: WASocket;
@@ -29,6 +30,10 @@ export class Utils {
     this.jid = this.msg.messages[0].key.remoteJid ?? undefined;
   }
 
+  async isGroup(): Promise<boolean> {
+    return this.msg.messages[0].key.remoteJid?.endsWith("@g.us") || false;
+  }
+
   async reply(
     content: string | AnyMessageContent,
     options: MiscMessageGenerationOptions = {}
@@ -40,6 +45,15 @@ export class Utils {
         quoted: this.msg.messages[0],
         ...options,
       });
+  }
+
+  async filterMessage(filter: FilterMessage): Promise<string> {
+    const message: string = (await this.getMessages()).trim();
+    return filter === FilterMessage.ExceptFirst
+      ? message.replace(message.split(" ")[0].trim(), "").trim()
+      : filter === FilterMessage.LastWord
+      ? message.split(" ").slice(-1)[0].trim()
+      : message;
   }
 
   simulate(type: Simulate) {

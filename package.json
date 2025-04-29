@@ -13,14 +13,15 @@
   "type": "commonjs",
   "main": "main.js",
   "scripts": {
-      "build": "tsc && cpy ./src/rust ./dist",
-      "build:rs": "cd modules && napi build && cpy ./index.node ./index.d.ts ../src/rust",
-      "start": "node dist/main.js"
+    "build": "tsc && cpy ./src/rust ./dist",
+    "build:rs": "cd modules && napi build && cpy ./index.node ./index.d.ts ../src/rust",
+    "start": "node dist/main.js"
   },
   "dependencies": {
     "@hapi/boom": "^10.0.1",
     "@napi-rs/cli": "^2.18.4",
     "baileys": "^6.7.16",
+    "node-cache": "^5.1.2",
     "pino": "^9.6.0",
     "qrcode": "^1.5.4"
   },

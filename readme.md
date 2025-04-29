@@ -46,12 +46,25 @@ import { PluginType } from "../../types/plugin_type";  // import plugin type
 
 export const plugin: PluginType = { // variable must be named `plugin`
   name: "Ping", // name the plugin
-  triggers: ["yt"], // triggers the plugin
+  triggers: ["ping", "p"], // triggers the plugin
   code: async (ctx, msg) => {
 	// do something
 	ctx.reply("Pong"); // Send reply chat
   },
 }
+```
+### Or
+```ts
+import { PluginType } from "../../types/plugin_type";
+
+export default {
+  name: "Plugin Name",
+  triggers: ["hi"], // trigger the plugin
+  code: async (ctx, msg) => {
+    // do something
+  },
+} as PluginType;
+
 ```
 
 ##  How Rust Helps
