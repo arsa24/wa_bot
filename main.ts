@@ -8,8 +8,7 @@ const main = async () => {
     path.resolve(__dirname + "/src/plugins"),
     sock
   );
-
   await handler.load();
-};
+}
 
 main();
