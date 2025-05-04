@@ -53,7 +53,7 @@ export const plugin: PluginType = { // variable must be named `plugin`
   },
 }
 ```
-### Or
+### Using default export
 ```ts
 import { PluginType } from "../../types/plugin_type";
 
@@ -64,6 +64,28 @@ export default {
     // do something
   },
 } as PluginType;
+
+```
+
+### Or use flags (Recomended)
+```ts
+export const plugin: PluginType = {
+  name: "Command name",
+  triggers: ["trigger"],
+  info: {
+    description: "Plugin description",
+    usage: ".trigger --help",
+    flags: {
+      // flag can be more than one
+      help: "Bantuan perintah",
+    },
+  },
+  code: async (ctx, msg) => {
+    const { args, flags } = await ctx.getParseCommand();
+    if(flag.help){
+      // do something
+    }
+};
 
 ```
 

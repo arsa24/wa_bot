@@ -1,5 +1,4 @@
 import { LogType, printLog } from "../../lib/print_log";
-import { FilterMessage } from "../../types/filter_message_type";
 import { PluginType } from "../../types/plugin_type";
 
 export const plugin: PluginType = {
@@ -14,7 +13,7 @@ export const plugin: PluginType = {
     },
   },
   code: async (ctx, msg) => {
-    const { args, flags } = await ctx.getParseCommand();
+    const { flags } = await ctx.getParseCommand();
     try {
       if (!(await ctx.isGroup()) || !ctx.jid) {
         return ctx.reply("Perintah ini hanya bisa digunakan di dalam grup.");
