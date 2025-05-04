@@ -41,6 +41,9 @@ npm start
 Each command is a TypeScript file contained in `/plugins/folder`.
 
 ### Example
+
+#### Using `plugin` variables
+
 ```ts
 import { PluginType } from "../../types/plugin_type";  // import plugin type
 
@@ -53,7 +56,7 @@ export const plugin: PluginType = { // variable must be named `plugin`
   },
 }
 ```
-### Using default export
+#### Using default export
 ```ts
 import { PluginType } from "../../types/plugin_type";
 
@@ -67,22 +70,27 @@ export default {
 
 ```
 
-### Or use flags (Recomended)
+#### Or use flags (Recomended)
 ```ts
 export const plugin: PluginType = {
   name: "Command name",
   triggers: ["trigger"],
   info: {
     description: "Plugin description",
-    usage: ".trigger --help",
+    usage: ".trigger --help | .trigger --text insert text here",
     flags: {
       // flag can be more than one
-      help: "Bantuan perintah",
+      help: "flags desription",
+      text: "flags desription"
     },
   },
   code: async (ctx, msg) => {
     const { args, flags } = await ctx.getParseCommand();
     if(flag.help){
+      // do something
+    }
+    if(flag.text){
+      const text = flag.text;
       // do something
     }
 };
