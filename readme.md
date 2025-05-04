@@ -4,7 +4,7 @@ This project is a WhatsApp bot built using [Baileys](https://github.com/WhiskeyS
 
 By combining the flexibility of Node.js and the speed of Rust, this project offers fast command matching and modular command management.
 
-##Getting Started
+## Getting Started
 
 ### 1. Clone the repository
 ```sh

@@ -17,42 +17,47 @@ export class PluginHandler {
 
   async load(): Promise<void> {
     this.sock.ev.on("messages.upsert", async (msg) => {
-      const ctx = new Utils(this.sock, msg);
-
-      const plugins = readPlugins(this.path);
-      const getMessage = await ctx.getMessages();
-      const getCommand = getMessage.split(" ")[0];
-
-      for (const pluginPath of plugins) {
-        try {
-          const pluginModule = require(pluginPath);
-          const cmd: PluginType =
-            pluginModule.default || pluginModule.plugin || pluginModule;
-
-          if (!cmd?.triggers || !Array.isArray(cmd.triggers)) continue;
-
-          const isMatch = matchingPlugin(
-            getCommand,
-            cmd.triggers,
-            botConfig.prefix
-          );
-          if (!isMatch) continue;
-
-          ctx.simulate(cmd.isVoiceChat ? Simulate.RECORDING : Simulate.TYPING);
-          await cmd.code(ctx, getMessage);
-          break;
-        } catch (error) {
-          printLog(`Plugin error in: ${pluginPath}\n${error}`, LogType.ERROR);
+      try {
+        const ctx = new Utils(this.sock, msg);
+    
+        const plugins = readPlugins(this.path);
+        const getMessage = await ctx.getMessages();
+        const getCommand = getMessage.split(" ")[0];
+    
+        for (const pluginPath of plugins) {
+          try {
+            const pluginModule = require(pluginPath);
+            const cmd: PluginType =
+              pluginModule.default || pluginModule.plugin || pluginModule;
+            if (!cmd?.triggers || !Array.isArray(cmd.triggers)) continue;
+    
+            const isMatch = matchingPlugin(
+              getCommand,
+              cmd.triggers,
+              botConfig.prefix
+            );
+            if (!isMatch) continue;
+    
+            ctx.simulate(
+              cmd.isVoiceChat ? Simulate.RECORDING : Simulate.TYPING
+            );
+            await cmd.code(ctx, getMessage);
+            break;
+          } catch (error) {
+            printLog(`Plugin error in: ${pluginPath}\n${error}`, LogType.ERROR);
+          }
         }
+    
+        const key = {
+          remoteJid: ctx.jid,
+          id: msg.messages[0].key.id,
+          participant: msg.messages[0].key.participant,
+        };
+    
+        await this.sock.readMessages([key]);
+      } catch (e) {
+        printLog(`Handler error:\n${e}`, LogType.ERROR);
       }
-
-      const key = {
-        remoteJid: ctx.jid,
-        id: msg.messages[0].key.id,
-        participant: msg.messages[0].key.participant,
-      };
-
-      await this.sock.readMessages([key]);
-    });
+    });    
   }
 }

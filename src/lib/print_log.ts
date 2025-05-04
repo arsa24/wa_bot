@@ -1,5 +1,5 @@
 enum LogType {
-    INFO, ERROR
+    INFO, WARN, ERROR
 }
 
 function printLog(msg: string, type: LogType){

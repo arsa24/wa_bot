@@ -7,6 +7,13 @@ import {
 } from "baileys";
 import { Simulate } from "../types/simulate_type";
 import { FilterMessage } from "../types/filter_message_type";
+import { PluginType } from "../types/plugin_type";
+
+interface ParsedCommand {
+  trigger: string;
+  flags: Record<string, string | boolean>;
+  args: string[];
+}
 
 export class Utils {
   sock: WASocket;
@@ -77,5 +84,60 @@ export class Utils {
       : messageType === "videoMessage"
       ? message.videoMessage?.caption ?? ""
       : "";
+  }
+
+  generateHelp(plugin: PluginType): string {
+    const name = plugin.name || "Tanpa Nama";
+    const desc = plugin.info?.description || "Tidak ada deskripsi.";
+    const usage = plugin.info?.usage || `.${plugin.triggers?.[0]} [opsi]`;
+    const flags = plugin.info?.flags || {};
+
+    const flagsText = Object.entries(flags)
+      .map(([flag, desc]) => `--${flag} → ${desc}`)
+      .join("\n");
+
+    return `
+*${name}*
+${desc}
+
+📌 *Penggunaan*:
+\`\`\`${usage}\`\`\`
+
+🔧 *Flags yang didukung*:
+${flagsText || "Tidak ada."}
+`.trim();
+  }
+
+  async getParseCommand(): Promise<ParsedCommand> {
+    const msg = await this.getMessages();
+
+    const [cmd, ...params] = msg.trim().split(/\s+/);
+    const flags: Record<string, string | boolean> = {};
+
+    if (!cmd) return { trigger: "", flags: {}, args: [] };
+
+    const args: string[] = [];
+
+    for (let i = 0; i < params.length; i++) {
+      const part = params[i];
+      if (part.startsWith("--") || part.startsWith("-")) {
+        const flag = part.startsWith("--") ? part.slice(2) : part.slice(1);
+        const next = params[i + 1];
+        if (next && !(next.startsWith("--") || next.startsWith("-"))) {
+          flags[flag] = next;
+          i++;
+        } else {
+          flags[flag] = true;
+        }
+      } else {
+        args.push(part);
+      }
+    }
+
+    return {
+      trigger: cmd.slice(1),
+      flags,
+      args,
+    };
   }
 }
